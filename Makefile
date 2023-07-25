@@ -1,7 +1,7 @@
 .EXPORT_ALL_VARIABLES:
 .PHONY: venv install pre-commit clean
 
-GLOBAL_PYTHON = $(shell py -3.9 -c 'import sys; print(sys.executable)')
+GLOBAL_PYTHON = $(shell py -3.11 -c 'import sys; print(sys.executable)')
 LOCAL_PYTHON = .\\.venv\\Scripts\\python.exe
 LOCAL_PRE_COMMIT = .\\.venv\\Lib\\site-packages\\pre_commit
 
@@ -9,6 +9,7 @@ setup: venv install pre-commit
 
 venv: $(GLOBAL_PYTHON)
 	@echo "Creating .venv..."
+	@echo $(GLOBAL_PYTHON)
 	poetry env use $(GLOBAL_PYTHON)
 
 install: ${LOCAL_PYTHON}
