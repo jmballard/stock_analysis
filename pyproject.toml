@@ -7,6 +7,10 @@ authors = ["Authors Names"]
 [tool.poetry.dependencies]
 python = "3.11.*"
 pandas = "^1"
+yfinance = "^0.2.26"
+tqdm = "^4.65.0"
+plotly = "^5.15.0"
+black = {extras = ["jupyter"], version = "^23.7.0"}
 
 [tool.poetry.group.dev.dependencies]
 black = "*"
