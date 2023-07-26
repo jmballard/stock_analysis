@@ -1,8 +1,9 @@
-import yfinance as yf
-import pandas as pd
-from dateutil import parser
 import os
 import sys
+
+import pandas as pd
+import yfinance as yf
+from dateutil import parser
 
 # Add the parent directory of this file to the Python path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
