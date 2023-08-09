@@ -12,6 +12,10 @@ tqdm = "^4.65.0"
 plotly = "^5.15.0"
 black = {extras = ["jupyter"], version = "^23.7.0"}
 scipy = "^1.11.1"
+dash = "^2.11.1"
+papermill = "^2.4.0"
+argparse = "^1.4.0"
+nbformat = "^5.9.2"
 
 [tool.poetry.group.dev.dependencies]
 black = "*"
