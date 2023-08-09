@@ -3,6 +3,7 @@ import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
 import plotly.subplots as sp
+from datetime import date, timedelta
 
 
 class TimeSeries:
@@ -162,7 +163,15 @@ class TimeSeries:
         """
         if frequency.lower() == "default":  # default is same as monthly
             self.fig.update_layout(xaxis_tickformat="%Y-%m", xaxis_dtick="M1")
-        if frequency.lower() == "monthly":
+        elif frequency.lower() == "daily":
+            self.fig.update_layout(
+                xaxis_tickformat="%Y-%m-%d",
+                xaxis_dtick=24 * 60 * 60 * 1000,
+                xaxis_tick0=date.strftime(
+                    date.today() - timedelta(days=5), format="%Y-%m-%d"
+                ),
+            )
+        elif frequency.lower() == "monthly":
             self.fig.update_layout(xaxis_tickformat="%Y-%m", xaxis_dtick="M1")
         elif frequency.lower() == "weekly":
             self.fig.update_layout(
