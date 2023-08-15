@@ -1,9 +1,10 @@
+from datetime import date, timedelta
+
 import numpy as np
 import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
 import plotly.subplots as sp
-from datetime import date, timedelta
 
 
 class TimeSeries:
