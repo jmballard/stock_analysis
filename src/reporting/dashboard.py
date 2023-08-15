@@ -1,19 +1,17 @@
 import datetime
-import sys
 import os
+import sys
+from pathlib import Path
 
 import dash
-from dash import Dash, dcc, html, Input, Output, State, callback, dash_table
 import plotly
-
-from pathlib import Path
+from dash import Dash, Input, Output, State, callback, dash_table, dcc, html
 
 # get the folder of this analysis
 sys.path.append(os.path.abspath(Path(__file__).parents[2]))
+from config import parameters  # noqa
 from src.data.financial_data import FinancialData  # noqa
 from src.plotting.timeseries import TimeSeries  # noqa
-
-from config import parameters  # noqa
 
 external_stylesheets = ["https://codepen.io/chriddyp/pen/bWLwgP.css"]
 
