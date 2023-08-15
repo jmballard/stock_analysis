@@ -1,8 +1,9 @@
+import time
+
 import numpy as np
 import pandas as pd
 import yfinance as yf
 from tqdm import tqdm
-import time
 
 
 class FinancialData:
@@ -28,40 +29,48 @@ class FinancialData:
 
         # get the up to date data by minute
         live_data = yf.download(tickers=self.name_company, period="max", interval="1m")
-        live_data["date"] = pd.to_datetime(live_data.index.date)
-        live_data["time"] = live_data.index.time
-        live_data["second_full"] = (
-            live_data.index.second
-            + live_data.index.minute * 60
-            + live_data.index.hour * 60 * 60
-        )
-
-        opening_time = live_data["time"].min()
-        closing_time = live_data["time"].max()
-
-        opening_time_secs = (
-            opening_time.hour * 3600 + opening_time.minute * 60 + opening_time.second
-        )
-        closing_time_secs = (
-            closing_time.hour * 3600 + closing_time.minute * 60 + closing_time.second
-        )
-
-        live_data["days_in_sec"] = live_data["date"].apply(
-            lambda x: time.mktime(x.timetuple())
-        )
-        live_data["corrected_second_full"] = (
-            np.floor(
-                (live_data["second_full"] - opening_time_secs)
-                / (closing_time_secs - opening_time_secs)
-                * 60
-                * 60
-                * 24
+        if live_data.shape[0] > 0:
+            live_data["date_raw"] = pd.to_datetime(live_data.index)
+            live_data["date"] = live_data["date_raw"].dt.date
+            live_data["time"] = live_data["date_raw"].dt.time
+            live_data["second_full"] = (
+                live_data["date_raw"].dt.second
+                + live_data["date_raw"].dt.minute * 60
+                + live_data["date_raw"].dt.hour * 60 * 60
             )
-            + live_data["days_in_sec"]
-        )
-        live_data["corrected_time"] = pd.to_datetime(
-            live_data["corrected_second_full"], unit="s"
-        )
+
+            opening_time = live_data["time"].min()
+            closing_time = live_data["time"].max()
+
+            print(opening_time)
+
+            opening_time_secs = (
+                opening_time.hour * 3600
+                + opening_time.minute * 60
+                + opening_time.second
+            )
+            closing_time_secs = (
+                closing_time.hour * 3600
+                + closing_time.minute * 60
+                + closing_time.second
+            )
+
+            live_data["days_in_sec"] = live_data["date"].apply(
+                lambda x: time.mktime(x.timetuple())
+            )
+            live_data["corrected_second_full"] = (
+                np.floor(
+                    (live_data["second_full"] - opening_time_secs)
+                    / (closing_time_secs - opening_time_secs)
+                    * 60
+                    * 60
+                    * 24
+                )
+                + live_data["days_in_sec"]
+            )
+            live_data["corrected_time"] = pd.to_datetime(
+                live_data["corrected_second_full"], unit="s"
+            )
 
         self.live_data = live_data
 
