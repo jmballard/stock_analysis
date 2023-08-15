@@ -1,8 +1,7 @@
 import os
+import subprocess
 
 import nbformat
-
-import subprocess
 import papermill as pm
 
 
@@ -47,9 +46,9 @@ HTML(open("report_style.css").read())
         Args:
             sections (dict): sections with their links
         """
-        TOC = "## Table of Contents"
+        TOC = "## Table of Contents\n"
         for section_name, link in sections.items():
-            TOC += f"[{section_name}](#{link})<br>"
+            TOC += "[{}](#{})<br>\n".format(section_name, link)
 
         self.notebook["cells"].append(nbformat.v4.new_markdown_cell(TOC))
 
