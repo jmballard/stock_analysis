@@ -64,7 +64,7 @@ def test_init():
     ).set_index("Date")
 
     assert all(
-        test_fd.today.reset_index(drop=False) == to_match.reset_index(drop=False)
+        test_fd.live_data.reset_index(drop=False) == to_match.reset_index(drop=False)
     )
 
 
@@ -139,7 +139,7 @@ def test_update_live_values():
     ).set_index("Date")
 
     assert all(
-        test_fd.today.reset_index(drop=False) == to_match.reset_index(drop=False)
+        test_fd.live_data.reset_index(drop=False) == to_match.reset_index(drop=False)
     )
 
 
