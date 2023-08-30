@@ -7,10 +7,36 @@ from .timeseries import TimeSeries
 
 
 class Shewhart(TimeSeries):
+    """Base class for Shewhart time series.
+
+    This class sets up all Shewhart time series plots.
+    """
+
     WARNING = 2
     ACTION = 3
 
     def __init__(self, pd_ts, title, xlab, ylab, label, y_format, filter_iqr=False):
+        """The initialisation of basic time series.
+
+        This is the initialisation of a basic time series plot.
+
+        Args:
+            pd_ts (pd.Series): Series, index dated.
+            title (str): Main title of plot
+            xlab (str): X-axis title
+            ylab (str): Y-axis title
+            label (str): label in legend
+            y_format (str): format of the y axis: 'pct', 'pound','integer' or 'numeric'
+            filter_iqr (bool, optional): Choice if we filter for IQR or not. Defaults to False.
+        """
+        if filter_iqr:
+            upper_q = pd_ts.quantile(0.75)
+            lower_q = pd_ts.quantile(0.25)
+            iqr = upper_q - lower_q
+            pd_ts = pd_ts[
+                (pd_ts >= (lower_q - 1.5 * iqr)) & (pd_ts <= (upper_q + 1.5 * iqr))
+            ]
+
         ts = TimeSeries(pd_ts, title, xlab, ylab, label, y_format)
 
         self.pd_ts = ts.pd_ts
