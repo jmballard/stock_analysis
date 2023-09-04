@@ -220,7 +220,19 @@ Here is the content of this repo:
 
 ## Possible improvements on this project: <a name="improvements"></a>
 
-List of possible improvements
+List of possible improvements:
+
+- add ARIMA modelling
+- add alerts in dashboard
+- create full dashboard
+- add unit tests for report class
+- create a daily full report
+
+What we want alerts for:
+
+- > X% benefit
+- predicted to increase by at least X perc in the next Y days
+- is beneficial but is predicted at a loss in the next few days
 
 ## Credits <a name="credits"></a>
 
