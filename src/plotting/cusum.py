@@ -17,13 +17,19 @@ class Cusum(TimeSeries):
     BETA = 0.01
     DELTA = 1.0
 
-    def __init__(self, pd_ts, title, xlab, ylab, label, y_format, filter_iqr=False):
+    def __init__(
+        self, pd_ts, bought_value, title, xlab, ylab, label, y_format, filter_iqr=False
+    ):
         m = pd_ts.mean()
 
         # print(S_lo)
         # calculate running cusum
         running_cusum = pd_ts.cumsum() - [n * m for n in range(1, 1 + len(pd_ts))]
 
+        if bought_value is None:
+            self.benefit = None
+        else:
+            self.benefit = (pd_ts - bought_value) / bought_value
         self.pd_ts = pd_ts
         self.title = title
         self.xlab = xlab

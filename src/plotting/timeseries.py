@@ -16,13 +16,14 @@ class TimeSeries:
     # main colours to be used by our plots
     COLOURS = ["purple", "darkgreen", "mediumslateblue", "darkorange", "red"]
 
-    def __init__(self, pd_ts, title, xlab, ylab, label, y_format):
+    def __init__(self, pd_ts, bought_value, title, xlab, ylab, label, y_format):
         """The initialisation of basic time series.
 
         This is the initialisation of a basic time series plot.
 
         Args:
-            pd_ts (pd.Series): Series, index dated.
+            pd_ts (pd.Series): Time series, where the index is the date
+            bought_value (float): Bought value. If None, will have no impact.
             title (str): Main title of plot
             xlab (str): X-axis title
             ylab (str): Y-axis title
@@ -35,13 +36,19 @@ class TimeSeries:
             )
 
         self.pd_ts = pd_ts
+
+        if bought_value is None:
+            self.benefit = None
+        else:
+            self.benefit = (pd_ts - bought_value) / bought_value
+
         self.title = title
         self.xlab = xlab
         self.ylab = ylab
         self.label = label
         self.y_format = y_format
 
-        fig = go.Figure()
+        fig = sp.make_subplots(specs=[[{"secondary_y": True}]])
 
         fig.add_trace(
             go.Scatter(
@@ -51,7 +58,8 @@ class TimeSeries:
                 line=dict(color=TimeSeries.COLOURS[0], width=2, dash="solid"),
                 showlegend=True,
                 name=label,
-            )
+            ),
+            secondary_y=False,
         )
 
         fig.update_layout(
@@ -153,6 +161,22 @@ class TimeSeries:
             xaxis_tickformat="%Y-%m",
             xaxis_dtick="M1",
         )
+
+    def add_benefit(self):
+        if self.benefit is not None:
+            self.fig.add_trace(
+                go.Scatter(
+                    x=self.pd_ts.index,
+                    y=self.benefit,
+                    name="Benefit",
+                    mode="lines",
+                    line=dict(color=TimeSeries.COLOURS[2], width=2, dash="dash"),
+                ),
+                secondary_y=True,
+            )
+            self.fig.update_yaxes(title_text="Benefit percentage", secondary_y=True)
+        else:
+            print("It was not bought - thus there is no benefit")
 
     def update_xaxis_frequency(self, frequency):
         """Update frequency of x-axis.

@@ -15,13 +15,16 @@ class Shewhart(TimeSeries):
     WARNING = 2
     ACTION = 3
 
-    def __init__(self, pd_ts, title, xlab, ylab, label, y_format, filter_iqr=False):
+    def __init__(
+        self, pd_ts, bought_value, title, xlab, ylab, label, y_format, filter_iqr=False
+    ):
         """The initialisation of basic time series.
 
         This is the initialisation of a basic time series plot.
 
         Args:
             pd_ts (pd.Series): Series, index dated.
+            bought_value (float): Bought value. If None, will have no impact.
             title (str): Main title of plot
             xlab (str): X-axis title
             ylab (str): Y-axis title
@@ -37,9 +40,10 @@ class Shewhart(TimeSeries):
                 (pd_ts >= (lower_q - 1.5 * iqr)) & (pd_ts <= (upper_q + 1.5 * iqr))
             ]
 
-        ts = TimeSeries(pd_ts, title, xlab, ylab, label, y_format)
+        ts = TimeSeries(pd_ts, bought_value, title, xlab, ylab, label, y_format)
 
         self.pd_ts = ts.pd_ts
+        self.benefit = ts.benefit
         self.title = ts.title
         self.xlab = ts.xlab
         self.ylab = ts.ylab

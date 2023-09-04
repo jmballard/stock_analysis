@@ -16,6 +16,7 @@ class Ewma(TimeSeries):
     def __init__(
         self,
         pd_ts,
+        bought_value,
         title,
         xlab,
         ylab,
@@ -30,6 +31,7 @@ class Ewma(TimeSeries):
 
         Args:
             pd_ts (pd.Series): Series, index dated.
+            bought_value (float): Bought value. If None, will have no impact.
             title (str): Main title of plot
             xlab (str): X-axis title
             ylab (str): Y-axis title
@@ -40,6 +42,11 @@ class Ewma(TimeSeries):
         """
         m = pd_ts.mean()
         s = pd_ts.std()
+
+        if bought_value is None:
+            self.benefit = None
+        else:
+            self.benefit = (pd_ts - bought_value) / bought_value
 
         n = len(pd.date_range(pd_ts.index.min(), pd_ts.index.max(), freq="M"))
 
@@ -60,7 +67,7 @@ class Ewma(TimeSeries):
         for j in range(1, len(pd_ts)):
             ewma[j] = smoothing_factor * pd_ts[j] + (1 - smoothing_factor) * ewma[j - 1]
 
-        ts = TimeSeries(ewma, title, xlab, ylab, label, y_format)
+        ts = TimeSeries(ewma, bought_value, title, xlab, ylab, label, y_format)
         self.pd_ts = ts.pd_ts
         self.title = ts.title
         self.xlab = ts.xlab
