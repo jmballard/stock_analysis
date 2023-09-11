@@ -187,23 +187,24 @@ Here is the content of this repo:
 ```bash
 .
 ├── config
-│   ├── connections.py
 │   └── parameters.py
-├── data
-│   ├── processed
-│   │   └── v1
-│   └── raw
-│       └── v1
-├── deploy
-│   ├── scripts
-│   └── tests
-├── develop
-│   ├── artifacts
-│   ├── eda
-│   ├── notebooks
-│   ├── scripts
-│   │   ├── eda.py
-│   │   └── load.py
+├── src
+│   ├── data
+│   │   └── financial_data.py
+│   ├── modelling
+│   │   └── arima.py
+│   ├── plotting
+│   │   ├── cusum.py
+│   │   ├── ewma.py
+│   │   ├── shewhart.py
+│   │   └── timeseries.py
+│   ├── reporting
+│   │   ├── dashboard.py
+│   │   ├── report_style.py
+│   │   └── report.py
+│   ├── tests
+│   │   ├── test_financial_data.py
+│   │   └── test_report.py
 │   └── main.py
 ├── label
 ├── train
@@ -222,7 +223,6 @@ Here is the content of this repo:
 
 List of possible improvements:
 
-- add ARIMA modelling
 - add alerts in dashboard
 - create full dashboard
 - add unit tests for report class
