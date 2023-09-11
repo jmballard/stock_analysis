@@ -2,6 +2,7 @@ import time
 
 import numpy as np
 import pandas as pd
+from datetime import datetime
 import yfinance as yf
 from tqdm import tqdm
 
@@ -25,6 +26,7 @@ class FinancialData:
         history = self.ticker.history(period="max")
         history.index = pd.to_datetime(history.index)
         history["Company"] = self.name_company
+        history["freq"] = history.index.to_period("D")
         self.history = history
 
         # get the up to date data by minute
@@ -71,7 +73,8 @@ class FinancialData:
             live_data["corrected_time"] = pd.to_datetime(
                 live_data["corrected_second_full"], unit="s"
             )
-
+            # give it a frequency by minute
+            live_data["freq"] = live_data.index.to_period("T")
         self.live_data = live_data
 
     def update_info(self):
