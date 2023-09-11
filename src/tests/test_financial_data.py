@@ -47,6 +47,7 @@ def test_init():
             "Company": ["test"],
         }
     ).set_index("Date")
+    to_match["freq"] = to_match.index.to_period("D")
     assert all(
         test_fd.history.reset_index(drop=False) == to_match.reset_index(drop=False)
     )
